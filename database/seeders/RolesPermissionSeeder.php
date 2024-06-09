@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,7 +31,7 @@ class RolesPermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permissionName){
-            Permission::findOrCreate($permissionName);
+            Permission::findOrCreate($permissionName, 'web ');
         }
 
         $hrRole->givePermissionTo([
@@ -46,6 +47,16 @@ class RolesPermissionSeeder extends Seeder
         ]);
 
         $gmRole->syncPermissions($permissions);
+
+        $gmUser = User::factory()->create([
+            'name' => 'GM manager',
+            'email' => 'gm@example.com',
+            'password' => bcrypt('password')
+        ]);
+
+        $gmUser->assignRole($gmRole);
+        $permissions = $gmRole->permissions()->pluck('name')->toArray();
+        $gmUser->givePermissionTo($permissions);
 
 
         $hrUser = User::factory()->create([
@@ -69,14 +80,34 @@ class RolesPermissionSeeder extends Seeder
         $permissions = $fmRole->permissions()->pluck('name')->toArray();
         $fmUser->givePermissionTo($permissions);
 
-        $gmUser = User::factory()->create([
-            'name' => 'GM manager',
-            'email' => 'gm@example.com',
-            'password' => bcrypt('password')
+
+
+
+        $gmEmployee = Employee::create([
+            'first_name' => 'general',
+            'last_name' => 'manager',
+            'email' => $gmUser->email,
+            'phone' => '0949623988',
+            'salary_id' => 1,
+            'user_id' => $gmUser->id
         ]);
 
-        $gmUser->assignRole($gmRole);
-        $permissions = $gmRole->permissions()->pluck('name')->toArray();
-        $gmUser->givePermissionTo($permissions);
+        $hrEmployee = Employee::create([
+            'first_name' => 'HR',
+            'last_name' => 'manager',
+            'email' => $hrUser->email,
+            'phone' => '0930610494',
+            'salary_id' => 1,
+            'user_id' => $hrUser->id
+        ]);
+
+        $fmEmployee = Employee::create([
+            'first_name' => 'FM',
+            'last_name' => 'manager',
+            'email' => $fmUser->email,
+            'phone' => '0949243710',
+            'salary_id' => 1,
+            'user_id' => $fmUser->id
+        ]);
    }
 }

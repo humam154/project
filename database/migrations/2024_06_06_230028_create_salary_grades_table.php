@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->char('letter')->nullable(false);
             $table->string('description')->nullable(false);
-            $table->float('basic salary')->nullable(false);
+            $table->float('basic_salary')->nullable(false);
             $table->timestamps();
         });
     }
