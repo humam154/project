@@ -27,11 +27,12 @@ class RolesPermissionSeeder extends Seeder
             'files.download',
             'salaries.increment',
             'grades.create', 'grades.update', 'grades.delete', 'grades.get',
-            'incentive.calculate'
+            'incentive.calculate',
+            'regulations.create', 'regulations.update', 'regulations.delete', 'regulations.get',
         ];
 
         foreach ($permissions as $permissionName){
-            Permission::findOrCreate($permissionName, 'web ');
+            Permission::findOrCreate($permissionName, 'web');
         }
 
         $hrRole->givePermissionTo([
