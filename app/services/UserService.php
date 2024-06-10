@@ -38,7 +38,7 @@ class UserService
 
     public function changePassword($request): array
     {
-        $user = User::query()->where('email', $request['email'])->first();
+        $user = Auth::user();
 
        if(!is_null($user)) {
 
