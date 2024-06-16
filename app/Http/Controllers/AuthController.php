@@ -6,6 +6,7 @@ use App\Http\Requests\AdminSignInRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UserSignInRequest;
 use App\Http\Responses\Response;
+use App\Models\User;
 use App\services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -21,17 +22,18 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    public function userLogin(UserSignInRequest $request)
+    public function userLogin(UserSignInRequest $request): JsonResponse
     {
         $data = [];
-
         try {
             $data = $this->userService->userLogin($request);
             if($data['code'] == 404){
                 return Response::Error($data['user'], $data['message'], $data['code']);
             }
-            if (Hash::check('password', $data['user']->password)) {
-                return response()->json(['user' => $data['user'], 'message' => 'password change required'], 307);
+            if('password' == $request->password) {
+                if (Hash::check('password', $data['user']['password'])) {
+                    return response()->json(['user' => $data['user'], 'message' => 'password change required'], 307);
+                }
             }
             return Response::Success($data['user'], $data['message'], $data['code']);
         }

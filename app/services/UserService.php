@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
 class UserService
 {
     public function userLogin($request): array|RedirectResponse
@@ -37,16 +38,18 @@ class UserService
     {
         $user = Auth::user();
 
-       if(!is_null($user)) {
+        if(!is_null($user)) {
 
-           if (!Hash::check($request->current_password, $user->password)) {
+           if (!Hash::check($request->current_password, $user->password)){
                $message = 'password is incorrect';
                $code = 400;
-           } else {
-               $user->password = Hash::make($request->new_password);
+           }
+           else {
+               $user->password = Hash::make($request->password);
                $user->save();
                $message = 'password changed successfully';
                $code = 200;
+               $user['token'] = $user->createToken("token")->plainTextToken;
            }
        }
        else{
@@ -62,7 +65,7 @@ class UserService
         $user = Auth::user();
 
         if(!is_null($user)){
-            Auth::user()->currentAccessToken->delete();
+            $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
             $message = 'logged out successfully';
             $code = 200;
         }

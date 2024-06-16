@@ -27,7 +27,7 @@ class UserSignInRequest extends FormRequest
     {
         return [
             'email' => 'email|required',
-            'password' => 'required|string|min:8|confirmed'
+            'password' => 'required|string|min:8'
         ];
     }
 
