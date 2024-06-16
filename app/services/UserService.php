@@ -15,9 +15,6 @@ class UserService
         $user = User::query()->where('email', $request['email'])->first();
 
         if(!is_null($user)) {
-            if ($request['password'] == 'password') {
-                return redirect()->action([UserService::class, 'changePassword']);
-            }
             if (!Auth::attempt($request->only(['email', 'password']))){
                 $message = 'user email and password does not match our record';
                 $code = 401;

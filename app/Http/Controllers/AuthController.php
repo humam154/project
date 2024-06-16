@@ -10,6 +10,7 @@ use App\services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class AuthController extends Controller
@@ -20,7 +21,7 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    public function userLogin(UserSignInRequest $request): RedirectResponse|JsonResponse
+    public function userLogin(UserSignInRequest $request)
     {
         $data = [];
 
@@ -29,8 +30,8 @@ class AuthController extends Controller
             if($data['code'] == 404){
                 return Response::Error($data['user'], $data['message'], $data['code']);
             }
-            if($data['code'] == 300){
-                return redirect()->action([AuthController::class, 'changePassword']);
+            if (Hash::check('password', $data['user']->password)) {
+                return response()->json(['user' => $data['user'], 'message' => 'password change required'], 307);
             }
             return Response::Success($data['user'], $data['message'], $data['code']);
         }
@@ -57,7 +58,8 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(){
+    public function logout(): JsonResponse
+    {
         $data = [];
 
         try{
@@ -73,7 +75,8 @@ class AuthController extends Controller
         }
     }
 
-    public function changePassword(ChangePasswordRequest $request){
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
+    {
         $data = [];
 
         try {
@@ -88,4 +91,5 @@ class AuthController extends Controller
             return Response::Error($data, $message);
         }
     }
+
 }
