@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -109,6 +110,22 @@ class RolesPermissionSeeder extends Seeder
             'phone' => '0949243710',
             'salary_id' => 1,
             'user_id' => $fmUser->id
+        ]);
+
+
+        $user = User::factory()->create([
+            'name' => 'humam allawi',
+            'email' => 'humam@allawi.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $userEmployee = Employee::create([
+            'first_name' => 'humam',
+            'last_name' => 'allawi',
+            'email' => $user->email,
+            'phone' => '0969876543',
+            'salary_id' => 1,
+            'user_id' => $user->id
         ]);
    }
 }
