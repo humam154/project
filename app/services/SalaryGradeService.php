@@ -3,14 +3,13 @@
 namespace App\services;
 
 use App\Models\SalaryGrade;
-use Illuminate\Support\Facades\Auth;
 
 class SalaryGradeService
 {
 
     public function create($request): array
     {
-            $salary_grade = SalaryGrade::create([
+            $salary_grade = SalaryGrade::query()->create([
                 'letter' => $request['letter'],
                 'description' => $request['description'],
                 'basic_salary' => $request['basic_salary']
@@ -22,7 +21,7 @@ class SalaryGradeService
 
     public function get(): array
     {
-        $salary_grade = SalaryGrade::get();
+        $salary_grade = SalaryGrade::query()->get();
 
         if(is_null($salary_grade)){
             $message = 'no grades found';
@@ -74,4 +73,5 @@ class SalaryGradeService
 
         return ['salary_grade' => $salary_grade, 'message' => $message, 'code' => $code];
     }
+
 }

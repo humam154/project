@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class EmployeeCreateRequest extends FormRequest
+class EmployeeUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,19 +25,15 @@ class EmployeeCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['string','required', 'min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
-            'last_name' => ['string','required', 'min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
-            'email' => ['email', 'required', 'unique:employees,email'],
+            'first_name' => ['string', 'min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+            'last_name' => ['string', 'min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+            'email' => ['email', 'unique:employees,email'],
             'phone' => [
-                'required',
                 'string',
                 'regex:/^\+?[0-9\s\-\(\)]+$/',
                 'min:10',
                 'max:15',
             ],
-            'employee_of_the_month' => ['nullable', 'integer', 'min:0','max:12'],
-            'salary' => ['required', 'numeric', 'min:0'],
-            'grade_id' => ['required', 'exists:salary_grades,id']
         ];
     }
 

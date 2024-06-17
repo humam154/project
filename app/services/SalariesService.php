@@ -8,7 +8,7 @@ class SalariesService
 {
     public function create($request): array
     {
-        $salary = Salary::create([
+        $salary = Salary::query()->create([
             'salary' => $request['salary'],
             'grade_id' => $request['grade_id']
         ]);
@@ -19,15 +19,16 @@ class SalariesService
 
     public function get(): array
     {
-        $salary = Salary::get();
+        $salary = Salary::query()->get();
 
         if(is_null($salary)){
             $message = 'no salaries found';
             $code = 404;
         }
-
-        $message = 'success';
-        $code = 200;
+        else {
+            $message = 'success';
+            $code = 200;
+        }
 
         return ['salary' => $salary, 'message' => $message, 'code' => $code];
     }

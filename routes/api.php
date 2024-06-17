@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\SalariesController;
 use App\Http\Controllers\SalaryGradesController;
 use Illuminate\Http\Request;
@@ -36,4 +37,11 @@ Route::prefix('salary')->controller(SalariesController::class)->group(function (
     Route::post('/', 'create')->name('salary.create');
     Route::post('/{id}', 'update')->name('salary.update');
     Route::delete('/{id}', 'delete')->name('salary.delete');
+});
+
+Route::prefix('employees')->controller(EmployeesController::class)->group(function (){
+    Route::get('/', 'get')->name('employees.get');
+    Route::post('/', 'create')->name('employees.create');
+    Route::post('/{id}', 'update')->name('employees.update');
+    Route::delete('/{id}', 'delete')->name('employees.delete');
 });

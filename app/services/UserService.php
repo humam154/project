@@ -2,7 +2,6 @@
 
 namespace App\services;
 
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
