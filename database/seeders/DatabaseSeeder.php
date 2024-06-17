@@ -26,5 +26,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesPermissionSeeder::class
         ]);
+
+        $this->call([
+            IncentiveSharesTableSeeder::class
+        ]);
     }
 }
