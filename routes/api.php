@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SalaryGradesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,11 @@ Route::controller(AuthController::class)->group(function (){
        Route::post('/change', 'changePassword')->name('changePassword');
     });
 
+});
+
+Route::prefix('grades')->controller(SalaryGradesController::class)->group(function (){
+        Route::get('/', 'get')->name('grades.get');
+        Route::post('/', 'create')->name('grades.create');
+        Route::post('/{id}', 'update')->name('grades.update');
+        Route::delete('/{id}', 'delete')->name('grades.delete');
 });

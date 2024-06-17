@@ -14,7 +14,7 @@ class Response
         ], $code);
     }
 
-    public static function Error($data, $message, $code=500): JsonResponse
+    public static function Error($data, $message, $code=400): JsonResponse
     {
         return response()->json([
             'data' => $data,
