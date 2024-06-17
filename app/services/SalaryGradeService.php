@@ -16,7 +16,7 @@ class SalaryGradeService
                 'basic_salary' => $request['basic_salary']
             ]);
 
-        return ['salary_grade' => $salary_grade, 'message' => 'create successfully', 'code' => 201];
+        return ['salary_grade' => $salary_grade, 'message' => 'create successfully', 'code' => 200];
 
     }
 
