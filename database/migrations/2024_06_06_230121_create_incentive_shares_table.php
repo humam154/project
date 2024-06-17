@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('name')->nullable(false);
 
-            $table->string('amount_of_share')->nullable(false);
+            $table->float('amount_of_share')->nullable(false);
 
             $table->timestamps();
         });
