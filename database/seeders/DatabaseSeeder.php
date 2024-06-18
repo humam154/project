@@ -30,5 +30,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             IncentiveSharesTableSeeder::class
         ]);
+
+        $this->call([
+            RegulationsTableSeeder::class
+        ]);
     }
 }
