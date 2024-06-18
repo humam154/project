@@ -6,6 +6,7 @@ use App\Http\Controllers\IncentiveSharesController;
 use App\Http\Controllers\RegulationsController;
 use App\Http\Controllers\SalariesController;
 use App\Http\Controllers\SalaryGradesController;
+use App\Http\Controllers\SalaryIncrementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,3 +64,5 @@ Route::prefix('regulations')->controller(RegulationsController::class)->group(fu
     Route::post('/{id}', 'update')->name('regulation.update');
     Route::delete('/{id}', 'delete')->name('regulation.delete');
 });
+
+Route::post('/increment', [SalaryIncrementController::class, 'create'])->middleware("auth:sanctum");

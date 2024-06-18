@@ -14,7 +14,10 @@ class SalariesTableSeeder extends Seeder
     public function run(): void
     {
         DB::table('salaries')->insert([
-            ['salary' => 1500000, 'grade_id' => 1]
+            ['salary' => 2500000, 'grade_id' => 1],
+            ['salary' => 1750000, 'grade_id' => 1],
+            ['salary' => 1500000, 'grade_id' => 1],
+            ['salary' => 500000, 'grade_id' => 4],
         ]);
     }
 }

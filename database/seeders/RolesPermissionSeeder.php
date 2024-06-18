@@ -98,7 +98,7 @@ class RolesPermissionSeeder extends Seeder
             'last_name' => 'manager',
             'email' => $hrUser->email,
             'phone' => '0930610494',
-            'salary_id' => 1,
+            'salary_id' => 2,
             'user_id' => $hrUser->id
         ]);
 
@@ -107,7 +107,7 @@ class RolesPermissionSeeder extends Seeder
             'last_name' => 'manager',
             'email' => $fmUser->email,
             'phone' => '0949243710',
-            'salary_id' => 1,
+            'salary_id' => 3,
             'user_id' => $fmUser->id
         ]);
 
@@ -123,7 +123,7 @@ class RolesPermissionSeeder extends Seeder
             'last_name' => 'allawi',
             'email' => $user->email,
             'phone' => '0969876543',
-            'salary_id' => 1,
+            'salary_id' => 4,
             'user_id' => $user->id
         ]);
    }
