@@ -15,10 +15,7 @@ return new class extends Migration
         Schema::create('regulations', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable(false);
-            $table->tinyInteger('points')->nullable(false)->unsigned();
-            $table->year('year')
-                ->nullable(true)
-                ->default(Carbon::now()->addYear()->year);
+            $table->float('points')->nullable(false)->unsigned();
             $table->timestamps();
         });
     }

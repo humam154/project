@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\IncentiveSharesController;
+use App\Http\Controllers\RegulationsController;
 use App\Http\Controllers\SalariesController;
 use App\Http\Controllers\SalaryGradesController;
 use Illuminate\Http\Request;
@@ -53,4 +54,12 @@ Route::prefix('share')->controller(IncentiveSharesController::class)->group(func
     Route::post('/', 'create')->name('share.create');
     Route::post('/{id}', 'update')->name('share.update');
     Route::delete('/{id}', 'delete')->name('share.delete');
+});
+
+
+Route::prefix('regulations')->controller(RegulationsController::class)->group(function (){
+    Route::get('/', 'get')->name('regulation.get');
+    Route::post('/', 'create')->name('regulation.create');
+    Route::post('/{id}', 'update')->name('regulation.update');
+    Route::delete('/{id}', 'delete')->name('regulation.delete');
 });
