@@ -25,7 +25,7 @@ class IncentiveShareUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+            'name' => ['min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'amount_of_share' => ['numeric', 'min:0', 'max:150']
         ];
     }

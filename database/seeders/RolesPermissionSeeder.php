@@ -52,7 +52,7 @@ class RolesPermissionSeeder extends Seeder
         $gmUser = User::factory()->create([
             'name' => 'GM manager',
             'email' => 'gm@example.com',
-            'password' => bcrypt('password')
+            'password' => Hash::make('password')
         ]);
 
         $gmUser->assignRole($gmRole);
@@ -63,7 +63,7 @@ class RolesPermissionSeeder extends Seeder
         $hrUser = User::factory()->create([
             'name' => 'HR manager',
             'email' => 'hr@example.com',
-            'password' => bcrypt('password')
+            'password' => Hash::make('password')
         ]);
 
         $hrUser->assignRole($hrRole);
@@ -74,7 +74,7 @@ class RolesPermissionSeeder extends Seeder
         $fmUser = User::factory()->create([
             'name' => 'FM manager',
             'email' => 'fm@example.com',
-            'password' => bcrypt('password')
+            'password' => Hash::make('password')
         ]);
 
         $fmUser->assignRole($fmRole);
