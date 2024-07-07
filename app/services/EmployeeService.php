@@ -7,6 +7,7 @@ use App\Models\Salary;
 use App\Models\SalaryGrade;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use phpDocumentor\Reflection\Types\Integer;
 
@@ -42,7 +43,11 @@ class EmployeeService
     public function get(): array
     {
 
-        $employee = Employee::query()->get();
+        $employee = DB::select('
+        SELECT * FROM employees e
+        JOIN salaries s ON e.salary_id = s.id
+        JOIN salary_grades g ON s.grade_id = g.id
+        ');
 
         if(is_null($employee)) {
             $message = 'there is no employees';

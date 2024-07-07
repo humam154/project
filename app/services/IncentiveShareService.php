@@ -51,7 +51,8 @@ class IncentiveShareService
         return ['incentive_share' => $incentive_share, 'message' => $message, 'code' => $code];
     }
 
-    public function update($request, $id){
+    public function update($request, $id): array
+    {
 
         $incentive_share = IncentiveShare::query()->find($id);
 
