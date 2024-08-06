@@ -28,6 +28,12 @@ class EmployeeUpdateRequest extends FormRequest
             'first_name' => ['string', 'min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'last_name' => ['string', 'min:2', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => ['email', 'unique:employees,email'],
+            'phone' => [
+                'string',
+                'regex:/^\+?[0-9\s\-\(\)]+$/',
+                'min:10',
+                'max:15',
+            ],
         ];
     }
 

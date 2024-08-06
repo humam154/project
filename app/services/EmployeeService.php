@@ -96,6 +96,7 @@ class EmployeeService
                 'first_name' => $request['first_name'] ?? $employee['first_name'],
                 'last_name' => $request['last_name'] ?? $employee['last_name'],
                 'email' => $request['email'] ?? $employee['email'],
+                'phone' => $request['phone'] ?? $employee['phone'],
             ]);
 
             $employee = Employee::query()->find($id);

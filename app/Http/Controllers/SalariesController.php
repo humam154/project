@@ -7,6 +7,7 @@ use App\Http\Requests\SalaryUpdateRequest;
 use App\Http\Responses\Response;
 use App\services\SalariesService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Throwable;
 
 class SalariesController extends Controller
@@ -93,4 +94,5 @@ class SalariesController extends Controller
             return Response::Error($data, $message);
         }
     }
+
 }
