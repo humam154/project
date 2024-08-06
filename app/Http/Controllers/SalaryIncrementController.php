@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\IncrementCreateRequest;
 use App\Http\Responses\Response;
+use App\Models\Employee;
 use App\services\SalaryIncrementService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,4 +32,5 @@ class SalaryIncrementController extends Controller
             return Response::Error($data, $message);
         }
     }
+
 }

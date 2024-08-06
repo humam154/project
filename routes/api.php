@@ -66,3 +66,4 @@ Route::prefix('regulations')->controller(RegulationsController::class)->group(fu
 });
 
 Route::post('/increment', [SalaryIncrementController::class, 'create'])->middleware("auth:sanctum");
+
