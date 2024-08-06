@@ -58,6 +58,10 @@ class RegulationService
             $regulation = $regulation->delete();
             $message = 'deleted successfully';
             $code = 200;
+
+            $all_points = Regulation::query()->update([
+                'points' => 100 / Regulation::count()
+            ]);
         }
 
         return ['regulation' => $regulation, 'message' => $message, 'code' => $code];
