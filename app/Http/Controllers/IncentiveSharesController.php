@@ -88,4 +88,28 @@ class IncentiveSharesController extends Controller
         }
     }
 
+    public function test(Request $request)
+    {
+        $incentives = $request->input('incentives', []);
+        $count = count($incentives);
+        $sum = 0;
+        for($i = 0; $i < $count ; $i++)
+        {
+            $sum += $incentives[$i]['points'];
+        }
+
+        $distribute_unit = $request['incentive_block'] / $sum;
+
+        for($i = 0 ; $i < $count ; $i++)
+        {
+            $distributedIncentive = DistributedIncentive::query()->create([
+                'employee_id' => $incentives[$i]['employee_id'],
+                'amount' => $incentives[$i]['points'] * $distribute_unit,
+                'points_amount' => $incentives[$i]['points'],
+                'share_id' => $incentives[$i]['share_id'],
+                'date' => Carbon::now()->format('Y-m-d'),
+            ]);
+        }
+
+    }
 }
