@@ -34,5 +34,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RegulationsTableSeeder::class
         ]);
+
+        $this->call([
+            AboutUsTableSeeder::class
+        ]);
     }
 }

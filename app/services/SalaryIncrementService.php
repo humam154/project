@@ -17,41 +17,51 @@ class SalaryIncrementService
 
         $user = Auth::user();
 
-        $increments = $request->input('increments');
+        if(!is_null($user)) {
 
-        $count = count($increments);
+            $increments = $request->input('increments');
 
-        $salary_increment = SalaryIncrement::query()->create([
-            'date' => Carbon::now()->format('Y-m-d'),
-            'percentage' => $request['percentage'],
-            'employee_id' => $user['id']
-        ]);
+            $count = count($increments);
 
-        for($i = 0; $i < $count; $i++){
-            $increment_on_employees = IncrementOnEmployee::query()->create([
-                'salary_increment_id' => $salary_increment['id'],
-                'employee_id' => $increments[$i]['employee_id'],
-                'percentage' => $salary_increment['percentage'],
+            $salary_increment = SalaryIncrement::query()->create([
+                'date' => Carbon::now()->format('Y-m-d'),
+                'percentage' => $request['percentage'],
+                'employee_id' => $user['id']
             ]);
-            $salary_id = DB::select('
+
+            for ($i = 0; $i < $count; $i++) {
+                $increment_on_employees = IncrementOnEmployee::query()->create([
+                    'salary_increment_id' => $salary_increment['id'],
+                    'employee_id' => $increments[$i]['employee_id'],
+                    'percentage' => $salary_increment['percentage'],
+                ]);
+                $salary_id = DB::select('
             SELECT salary_id FROM salaries s JOIN employees e ON e.salary_id = s.id WHERE e.id = ?
             ', [$increment_on_employees['employee_id']]);
-            $salary_id = $salary_id[0]->salary_id;
+                $salary_id = $salary_id[0]->salary_id;
 
-            $old_salary = DB::select('
+                $old_salary = DB::select('
             SELECT salary FROM salaries s JOIN employees e ON e.salary_id = s.id WHERE e.id = ?
             ', [$increment_on_employees['employee_id']]);
-            $old_salary = (float) $old_salary[0]->salary;
+                $old_salary = (float)$old_salary[0]->salary;
 
-            $new_salary = ($salary_increment['percentage'] / 100) * $old_salary + $old_salary;
+                $new_salary = ($salary_increment['percentage'] / 100) * $old_salary + $old_salary;
 
-            DB::update('
+                DB::update('
             UPDATE salaries SET salary = ? WHERE id = ?
             ', [$new_salary, $salary_id]);
 
-            $employees = $increment_on_employees[$i];
+                $employees = $increment_on_employees[$i];
+            }
+
+            $message = 'incremented successfully';
+            $code = 200;
+        } else{
+            $salary_increment = [];
+            $message = 'invalid token';
+            $code = 401;
         }
 
-        return ['increment' => $salary_increment, 'message' => 'added successfully', 'code' => 200];
+        return ['increment' => $salary_increment, 'message' => $message, 'code' => $code];
     }
 }

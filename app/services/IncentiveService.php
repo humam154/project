@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class IncentiveService
 {
 
-    public function create($request)
+    public function create($request): array
     {
         $incentives = $request->input('incentives', []);
 

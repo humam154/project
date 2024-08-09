@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DistributedIncentiveController;
 use App\Http\Controllers\EmployeesController;
@@ -66,7 +67,12 @@ Route::prefix('regulations')->controller(RegulationsController::class)->group(fu
     Route::delete('/{id}', 'delete')->name('regulation.delete');
 });
 
-Route::post('/increment', [SalaryIncrementController::class, 'create'])->middleware("auth:sanctum");
+Route::post('/increment', [SalaryIncrementController::class, 'create'])->name('salaries.increment')->middleware("auth:sanctum");
 
 
-Route::post('/distribute', [DistributedIncentiveController::class, 'create']);
+Route::post('/distribute', [DistributedIncentiveController::class, 'create'])->name('incentive.calculate');
+
+Route::prefix('aboutUs')->controller(AboutUsController::class)->group(function (){
+    Route::get('/', 'get')->name('aboutUs.get');
+    Route::post('/', 'update')->name('aboutUs.edit')->middleware("auth:sanctum");
+});
