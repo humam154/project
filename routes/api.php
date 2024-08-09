@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\DistributedIncentiveController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\IncentiveSharesController;
@@ -75,4 +76,9 @@ Route::post('/distribute', [DistributedIncentiveController::class, 'create'])->n
 Route::prefix('aboutUs')->controller(AboutUsController::class)->group(function (){
     Route::get('/', 'get')->name('aboutUs.get');
     Route::post('/', 'update')->name('aboutUs.edit')->middleware("auth:sanctum");
+});
+
+Route::prefix('complains')->controller(ComplainController::class)->group(function (){
+    Route::get('/', 'get')->name('complains.get');
+    Route::post('/', 'create')->middleware('auth:sanctum')->name('complains.create');
 });

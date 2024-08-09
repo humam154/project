@@ -38,5 +38,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AboutUsTableSeeder::class
         ]);
+
+        $this->call([
+            ComplainsTableSeeder::class
+        ]);
     }
 }
