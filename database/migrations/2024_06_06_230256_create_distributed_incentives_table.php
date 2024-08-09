@@ -19,7 +19,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->float('amount');
+            $table->decimal('amount', 9, 1);
 
             $table->tinyInteger('points_amount')->unsigned();
 

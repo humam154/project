@@ -18,11 +18,6 @@ return new class extends Migration
 
             $table->float('amount_of_share')->nullable(false);
 
-            $table->foreignId('grade_id')
-                ->constrained('salary_grades')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
             $table->timestamps();
         });
     }

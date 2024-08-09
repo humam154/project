@@ -12,36 +12,30 @@ class IncentiveService
 
     public function create($request)
     {
-        $employees = Employee::query()->get();
-
-        $date = Carbon::now('Y-m-d');
-
         $incentives = $request->input('incentives', []);
+        $distribute_unit = $request['incentive_block'] / $this->sumOfPoints($incentives);
 
+        for($i = 0 ; $i < count($incentives) ; $i++)
+        {
+            $distributedIncentive = DistributedIncentive::query()->create([
+                'employee_id' => $incentives[$i]['employee_id'],
+                'amount' => $incentives[$i]['points'] * $distribute_unit,
+                'points_amount' => $incentives[$i]['points'],
+                'share_id' => $incentives[$i]['share_id'],
+                'date' => Carbon::now()->format('Y-m-d'),
+            ]);
+        }
+    }
+
+    private function sumOfPoints($incentives): int
+    {
         $count = count($incentives);
-
-        $virtual = 0;
-
-        $share = count($employees);
-
+        $sum = 0;
         for($i = 0; $i < $count ; $i++)
         {
-            if($incentives[$i]['points'] > 100){
-                $virtual = $virtual + ($incentives[$i]['points'] - 100);
-
-                if($virtual >= 100){
-                    $share++;
-                    $virtual -= 100;
-                }
-
-                if($i == count($incentives)-1 && $virtual != 0){
-                    $share++;
-                }
-            }
+            $sum += $incentives[$i]['points'];
         }
 
-        $share_per_employee = $request['incentive_block'] / $share;
-
-
+        return $sum;
     }
 }
