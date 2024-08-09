@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DistributedIncentiveController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\IncentiveSharesController;
 use App\Http\Controllers\RegulationsController;
@@ -68,4 +69,4 @@ Route::prefix('regulations')->controller(RegulationsController::class)->group(fu
 Route::post('/increment', [SalaryIncrementController::class, 'create'])->middleware("auth:sanctum");
 
 
-Route::post('/test', [IncentiveSharesController::class, 'test']);
+Route::post('/distribute', [DistributedIncentiveController::class, 'create']);
