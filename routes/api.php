@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\DistributedIncentiveController;
+use App\Http\Controllers\EmployeeOfTheMonthController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\IncentiveSharesController;
 use App\Http\Controllers\RegulationsController;
@@ -81,4 +82,10 @@ Route::prefix('aboutUs')->controller(AboutUsController::class)->group(function (
 Route::prefix('complains')->controller(ComplainController::class)->group(function (){
     Route::get('/', 'get')->name('complains.get');
     Route::post('/', 'create')->middleware('auth:sanctum')->name('complains.create');
+});
+
+Route::prefix('empOfTheMonth')->controller(EmployeeOfTheMonthController::class)->group(function (){
+   Route::get('/', 'get')->name('empOfTheMonth.get');
+   Route::post('/', 'add')->name('empOfTheMonth.add');
+   Route::get('/{number}', 'getTop')->name('empOfTheMonth.top');
 });
