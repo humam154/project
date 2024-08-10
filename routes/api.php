@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeOfTheMonthController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\IncentiveSharesController;
 use App\Http\Controllers\RegulationsController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SalariesController;
 use App\Http\Controllers\SalaryGradesController;
 use App\Http\Controllers\SalaryIncrementController;
@@ -89,3 +90,8 @@ Route::prefix('empOfTheMonth')->controller(EmployeeOfTheMonthController::class)-
    Route::post('/', 'add')->name('empOfTheMonth.add');
    Route::get('/{number}', 'getTop')->name('empOfTheMonth.top');
 });
+
+
+Route::get('/finance', [ReportsController::class, 'finance'])->name('reports.finance');
+
+Route::get('/HR', [ReportsController::class, 'hr'])->name('reports.hr');
