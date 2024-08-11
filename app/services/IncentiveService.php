@@ -3,8 +3,11 @@
 namespace App\services;
 
 use App\Models\DistributedIncentive;
+use App\Models\Employee;
 use App\Models\NoteOnEmployee;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class IncentiveService
 {
@@ -71,5 +74,50 @@ class IncentiveService
         }
 
         return $sum;
+    }
+
+    public function getIncentivesForCurrentYear() : array
+    {
+        $user = Auth::user();
+
+        if(!is_null($user)){
+
+            $employee = Employee::query()->where('user_id', $user['id'])->first();
+
+            if(!is_null($employee)) {
+
+                $incentives = DB::select('
+                SELECT e.id, CONCAT(e.first_name, " ", e.last_name) AS "employee_name", di.amount, di.points_amount, di.date
+                FROM distributed_incentives di
+                JOIN employees e ON e.id = di.employee_id
+                WHERE YEAR(date) = YEAR(NOW()) AND di.employee_id = ?
+                ', [$employee['id']]);
+
+                $incentives = $incentives[0];
+            } else {
+                $incentives = [];
+                $message = 'employee not found';
+                $code = 404;
+            }
+        } else{
+            $incentives = [];
+            $message = 'unauthorized';
+            $code = 401;
+        }
+
+        return ['incentives' => $incentives, 'message' => $message, 'code' => $code];
+    }
+
+    public function get(): array
+    {
+        $incentives = DB::select('
+        SELECT *
+        FROM distributed_incentives di
+        JOIN employees e ON e.id = di.employee_id
+        ');
+        $message = 'success';
+        $code = 200;
+
+        return ['incentives' => $incentives, 'message' => $message, 'code' => $code];
     }
 }

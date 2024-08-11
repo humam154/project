@@ -45,6 +45,7 @@ Route::prefix('salary')->controller(SalariesController::class)->group(function (
     Route::post('/', 'create')->name('salary.create');
     Route::post('/{id}', 'update')->name('salary.update');
     Route::delete('/{id}', 'delete')->name('salary.delete');
+    Route::get('/{id}', 'getById')->name('salary.getById');
 });
 
 Route::prefix('employees')->controller(EmployeesController::class)->group(function (){
@@ -73,7 +74,12 @@ Route::prefix('regulations')->controller(RegulationsController::class)->group(fu
 Route::post('/increment', [SalaryIncrementController::class, 'create'])->name('salaries.increment')->middleware("auth:sanctum");
 
 
-Route::post('/distribute', [DistributedIncentiveController::class, 'create'])->name('incentive.calculate');
+Route::prefix('/incentives')->controller(DistributedIncentiveController::class)->group(function (){
+    Route::post('/', [DistributedIncentiveController::class, 'create'])->name('incentive.calculate');
+    Route::get('/', [DistributedIncentiveController::class, 'get'])->name('incentive.get');
+    Route::get('/byYear', [DistributedIncentiveController::class, 'getByYear'])->name('incentive.getByYear');
+});
+
 
 Route::prefix('aboutUs')->controller(AboutUsController::class)->group(function (){
     Route::get('/', 'get')->name('aboutUs.get');

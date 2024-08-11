@@ -2,7 +2,9 @@
 
 namespace App\services;
 
+use App\Models\Employee;
 use App\Models\Salary;
+use Illuminate\Support\Facades\Auth;
 
 class SalariesService
 {
@@ -69,6 +71,38 @@ class SalariesService
         else{
             $message = 'no salary found';
             $code = 404;
+        }
+
+        return ['salary' => $salary, 'message' => $message, 'code' => $code];
+    }
+
+    public function getById($id) : array
+    {
+        $user = Auth::user();
+
+        if(!is_null($user)){
+            $employee = Employee::query()->where('user_id', $user['id'])->first();
+
+            if(!is_null($employee)) {
+
+                $salary = DB::select('
+                    SELECT s.salary
+                    FROM employees e
+                    JOIN salaries s ON e.salary_id = s.id
+                    WHERE e.id = ?
+                    ', $employee['id']);
+                $salary = $salary[0];
+                $message = 'success';
+                $code = 200;
+            } else{
+                $salary = [];
+                $message = 'no employee found';
+                $code = 404;
+                }
+        } else {
+            $salary = [];
+            $message = 'unauthenticated';
+            $code = 401;
         }
 
         return ['salary' => $salary, 'message' => $message, 'code' => $code];

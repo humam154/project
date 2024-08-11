@@ -95,4 +95,25 @@ class SalariesController extends Controller
         }
     }
 
+    public function getById($id): JsonResponse
+    {
+
+        $data = [];
+
+        try{
+            $data = $this->salariesService->getById($id);
+
+            if($data['code'] != 200){
+                return Response::Error($data['salary'], $data['message'], $data['code']);
+            }
+
+            return Response::Success($data['salary'], $data['message']);
+        }
+
+        catch (Throwable $throwable){
+            $message = $throwable->getMessage();
+            return Response::Error($data, $message);
+        }
+    }
+
 }

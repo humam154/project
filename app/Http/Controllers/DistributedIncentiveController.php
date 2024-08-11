@@ -31,4 +31,37 @@ class DistributedIncentiveController extends Controller
             return Response::Error($data, $message);
         }
     }
+
+    public function get(): JsonResponse
+    {
+        $data = [];
+
+        try{
+            $data = $this->incentiveService->get();
+
+            return Response::Success($data['incentives'], $data['message'], $data['code']);
+        }
+        catch (Throwable $throwable){
+            $message = $throwable->getMessage();
+            return Response::Error($data, $message);
+        }
+    }
+    public function getByYear(): JsonResponse
+    {
+        $data = [];
+
+        try{
+            $data = $this->incentiveService->getIncentivesForCurrentYear();
+
+            if($data['code'] != 200){
+                return Response::Error($data['incentives'], $data['message'], $data['code']);
+            }
+
+            return Response::Success($data['incentives'], $data['message'], $data['code']);
+        }
+        catch (Throwable $throwable){
+            $message = $throwable->getMessage();
+            return Response::Error($data, $message);
+        }
+    }
 }
