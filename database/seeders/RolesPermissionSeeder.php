@@ -40,7 +40,6 @@ class RolesPermissionSeeder extends Seeder
             'employees.create', 'employees.update', 'employees.delete', 'employees.get',
             'aboutUs.edit',
             'complains.get',
-            'files.download',
             ]);
 
         $fmRole->givePermissionTo([
