@@ -29,6 +29,7 @@ class RolesPermissionSeeder extends Seeder
             'grades.create', 'grades.update', 'grades.delete', 'grades.get',
             'incentive.calculate',
             'regulations.create', 'regulations.update', 'regulations.delete', 'regulations.get',
+            'share.create', 'share.update', 'share.delete', 'share.get',
         ];
 
         foreach ($permissions as $permissionName){
