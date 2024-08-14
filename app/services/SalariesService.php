@@ -5,6 +5,7 @@ namespace App\services;
 use App\Models\Employee;
 use App\Models\Salary;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SalariesService
 {
@@ -81,17 +82,10 @@ class SalariesService
         $user = Auth::user();
 
         if(!is_null($user)){
-            $employee = Employee::query()->where('user_id', $user['id'])->first();
-
+            $employee = Employee::query()->where('user_id', $user['id'])
+                ->join('salaries', 'employees.salary_id', '=', 'salaries.id')->first();
             if(!is_null($employee)) {
-
-                $salary = DB::select('
-                    SELECT s.salary
-                    FROM employees e
-                    JOIN salaries s ON e.salary_id = s.id
-                    WHERE e.id = ?
-                    ', $employee['id']);
-                $salary = $salary[0];
+                $salary = $employee['salary'];
                 $message = 'success';
                 $code = 200;
             } else{
@@ -120,7 +114,8 @@ class SalariesService
                 $expected_salary = [];
 
                 for ($i = 0 ; $i < 12 ; $i++){
-                    $expected_salary[$i] = ($salary * rand(0.05, 0.20)) + $salary;
+                    $percentage = mt_rand(5, 20) / 100;
+                    $expected_salary[$i] = ($salary['salary'] * $percentage) + $salary['salary'];
                 }
 
                 $message = 'success';

@@ -3305,13 +3305,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/salary/4",
+							"raw": "{{url}}/salary/id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"salary",
-								"4"
+								"id"
 							]
 						}
 					},

@@ -95,13 +95,13 @@ class SalariesController extends Controller
         }
     }
 
-    public function getById($id): JsonResponse
+    public function getById(): JsonResponse
     {
 
         $data = [];
 
         try{
-            $data = $this->salariesService->getById($id);
+            $data = $this->salariesService->getById();
 
             if($data['code'] != 200){
                 return Response::Error($data['salary'], $data['message'], $data['code']);

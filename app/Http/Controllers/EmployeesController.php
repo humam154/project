@@ -6,6 +6,7 @@ use App\Http\Requests\EmployeeCreateRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Http\Responses\Response;
 use App\services\EmployeeService;
+use App\services\SalariesService;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 
@@ -91,4 +92,6 @@ class EmployeesController extends Controller
             return Response::Error($data, $message);
         }
     }
+
+
 }

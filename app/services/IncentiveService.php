@@ -93,7 +93,8 @@ class IncentiveService
                 WHERE YEAR(date) = YEAR(NOW()) AND di.employee_id = ?
                 ', [$employee['id']]);
 
-                $incentives = $incentives[0];
+                $message = 'success';
+                $code = 200;
             } else {
                 $incentives = [];
                 $message = 'employee not found';
