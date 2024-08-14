@@ -107,4 +107,35 @@ class SalariesService
 
         return ['salary' => $salary, 'message' => $message, 'code' => $code];
     }
+
+    public function expectSalary(): array
+    {
+        $user = Auth::user();
+
+        if(!is_null($user)){
+            $employee = Employee::query()->where('user_id', $user['id'])->first();
+
+            $salary = Salary::query()->where('id', $employee['salary_id'])->first();
+            if(!is_null($employee)){
+                $expected_salary = [];
+
+                for ($i = 0 ; $i < 12 ; $i++){
+                    $expected_salary[$i] = ($salary * rand(0.05, 0.20)) + $salary;
+                }
+
+                $message = 'success';
+                $code = 200;
+            } else {
+                $expected_salary = [];
+                $message = 'no employee found';
+                $code = 404;
+            }
+        } else{
+            $expected_salary = [];
+            $message = 'unauthenticated';
+            $code = 401;
+        }
+
+        return ['salary' => $expected_salary, 'message' => $message, 'code' => $code];
+    }
 }
