@@ -45,7 +45,7 @@ Route::prefix('salary')->controller(SalariesController::class)->group(function (
     Route::post('/', 'create')->name('salary.create');
     Route::post('/{id}', 'update')->name('salary.update');
     Route::delete('/{id}', 'delete')->name('salary.delete');
-    Route::get('/{id}', 'getById')->name('salary.getById');
+    Route::get('/id', 'getById')->name('salary.getById');
     Route::get('/expect', 'expectSalary')->name('salary.expect');
 });
 

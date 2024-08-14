@@ -76,7 +76,7 @@ class SalariesService
         return ['salary' => $salary, 'message' => $message, 'code' => $code];
     }
 
-    public function getById($id) : array
+    public function getById() : array
     {
         $user = Auth::user();
 
