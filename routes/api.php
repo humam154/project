@@ -103,5 +103,3 @@ Route::get('/finance', [ReportsController::class, 'finance'])->name('reports.fin
 
 Route::get('/HR', [ReportsController::class, 'hr'])->name('reports.hr');
 
-
-//testing
