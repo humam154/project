@@ -82,10 +82,14 @@ class SalariesService
         $user = Auth::user();
 
         if(!is_null($user)){
-            $employee = Employee::query()->where('user_id', $user['id'])
-                ->join('salaries', 'employees.salary_id', '=', 'salaries.id')->first();
+            $employee = Employee::query()->where('user_id', $user['id'])->first();
             if(!is_null($employee)) {
-                $salary = $employee['salary'];
+                $salary = DB::select('
+                SELECT salary
+                FROM salaries s
+                JOIN employees e ON e.salary_id = s.id
+                WHERE e.id = ?
+                ', [$employee['id']]);
                 $message = 'success';
                 $code = 200;
             } else{
