@@ -93,5 +93,22 @@ class EmployeesController extends Controller
         }
     }
 
+    public function getById(): JsonResponse
+    {
+        $data = [];
 
+        try{
+            $data = $this->employeeService->getById();
+
+            if($data['code'] != 200){
+                return Response::Error($data['employee'], $data['message'], $data['code']);
+            }
+
+            return Response::Success($data['employee'], $data['message']);
+        }
+        catch (Throwable $throwable){
+            $message = $throwable->getMessage();
+            return Response::Error($data, $message);
+        }
+    }
 }

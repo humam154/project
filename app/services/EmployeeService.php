@@ -7,6 +7,7 @@ use App\Models\Salary;
 use App\Models\SalaryGrade;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use phpDocumentor\Reflection\Types\Integer;
@@ -44,7 +45,9 @@ class EmployeeService
     {
 
         $employee = DB::select('
-        SELECT * FROM employees e
+        SELECT e.id, e.first_name, e.last_name, e.email, e.phone, e.employee_of_the_month ,e.salary_id, e.user_id,
+               s.salary, g.id as grade_id, g.letter, g.description, g.basic_salary
+        FROM employees e
         JOIN salaries s ON e.salary_id = s.id
         JOIN salary_grades g ON s.grade_id = g.id
         ');
@@ -108,6 +111,28 @@ class EmployeeService
             $code = 404;
         }
 
+
+        return ['employee' => $employee, 'message' => $message, 'code' => $code];
+    }
+
+    public function getById()
+    {
+        $user = Auth::user();
+
+        if(!is_null($user)) {
+            $employee = Employee::query()->where('user_id', $user['id'])->first();
+
+            if(!is_null($employee)) {
+                $message = 'success';
+                $code = 200;
+            } else {
+                $message = 'no employee found';
+                $code = 404;
+            }
+        } else {
+            $message = 'unauthenticated';
+            $code = 401;
+        }
 
         return ['employee' => $employee, 'message' => $message, 'code' => $code];
     }

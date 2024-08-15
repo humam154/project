@@ -54,6 +54,8 @@ Route::prefix('employees')->controller(EmployeesController::class)->group(functi
     Route::post('/', 'create')->name('employees.create');
     Route::post('/{id}', 'update')->name('employees.update');
     Route::delete('/{id}', 'delete')->name('employees.delete');
+
+    Route::get('/id', 'getById')->name('employees.getById')->middleware('auth:sanctum');
 });
 
 
@@ -102,4 +104,3 @@ Route::prefix('empOfTheMonth')->controller(EmployeeOfTheMonthController::class)-
 Route::get('/finance', [ReportsController::class, 'finance'])->name('reports.finance');
 
 Route::get('/HR', [ReportsController::class, 'hr'])->name('reports.hr');
-
