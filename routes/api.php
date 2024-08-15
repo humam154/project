@@ -102,3 +102,6 @@ Route::prefix('empOfTheMonth')->controller(EmployeeOfTheMonthController::class)-
 Route::get('/finance', [ReportsController::class, 'finance'])->name('reports.finance');
 
 Route::get('/HR', [ReportsController::class, 'hr'])->name('reports.hr');
+
+
+//testing
