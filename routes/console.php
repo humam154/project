@@ -15,75 +15,55 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 
-Schedule::call(function (){
-    $employees = Employee::query()->get();
+Schedule::call(function () {
+    try {
+        // Fetch all employees and necessary data in raw SQL
+        $employees = DB::select('
+            SELECT
+                e.id AS employee_id,
+                CONCAT(e.first_name, " ", e.last_name) AS full_name,
+                e.email,
+                e.phone,
+                s.salary,
+                g.letter AS grade,
+                (SELECT COUNT(c.id)
+                 FROM complains c
+                 WHERE c.employee_id = e.id
+                   AND YEAR(c.date) = YEAR(NOW())
+                ) AS number_of_complains,
+                (SELECT SUM(di.amount)
+                 FROM distributed_incentives di
+                 WHERE di.employee_id = e.id
+                   AND YEAR(di.date) = YEAR(NOW())
+                ) AS incentives
+            FROM employees e
+            JOIN salaries s ON e.salary_id = s.id
+            JOIN salary_grades g ON s.grade_id = g.id
+        ');
 
-    for ($i = 1; $i <= count($employees); $i++) {
-        $employee_id = $i;
+        // Insert logs into the database
+        foreach ($employees as $employee) {
+            DB::table('logs')->insert([
+                'employee_id' => $employee->employee_id,
+                'full_name' => $employee->full_name,
+                'email' => $employee->email,
+                'phone' => $employee->phone,
+                'salary' => $employee->salary,
+                'grade' => $employee->grade,
+                'number_of_complains' => $employee->number_of_complains ?? 0,
+                'incentives' => $employee->incentives ?? 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
-        $full_name = DB::select('
-        SELECT CONCAT(first_name, " ", last_name) AS "full_name" FROM employees WHERE id = ?
-        ', [$employee_id]);
-        $full_name = $full_name[0];
+        // Export logs to Excel
+        $year = Carbon::now()->year;
+        $year = (string)$year;
+        $file_name = $year . '.xlsx';
 
-        $email = DB::select('
-        SELECT email FROM employees WHERE id = ?
-        ', [$employee_id]);
-        $email = $email[0];
-
-        $phone = DB::select('
-        SELECT phone FROM employees WHERE id = ?
-        ', [$employee_id]);
-        $phone = $phone[0];
-
-        $salary = DB::select('
-        SELECT salary
-        FROM salaries s
-        JOIN employees e ON e.salary_id = s.id
-        WHERE e.id = ?
-        ', [$employee_id]);
-        $salary = $salary[0];
-
-        $grade = DB::select('
-        SELECT letter
-        FROM salary_grades g
-        JOIN salaries s ON s.grade_id = g.id
-        JOIN employees e ON e.salary_id = s.id
-        WHERE e.id = ?
-        ', [$employee_id]);
-        $grade = $grade[0];
-
-        $number_of_complains = DB::select('
-        SELECT COUNT(id) AS "number_of_complains"
-        FROM complains
-        WHERE employee_id = ? AND YEAR(date) = YEAR(NOW())
-        ', [$employee_id]);
-        $number_of_complains = $number_of_complains[0];
-
-        $incentives = DB::select('
-        SELECT amount
-        FROM distributed_incentives
-        WHERE employee_id = ? AND YEAR(date) = YEAR(NOW())
-        ', [$employee_id]);
-        $incentives = $incentives[0];
-
-        $log = Log::query()->create([
-            'employee_id' => $employee_id,
-            'full_name' => $full_name,
-            'email' => $email,
-            'phone' => $phone,
-            'salary' => $salary,
-            'grade' => $grade,
-            'number_of_complains' => $number_of_complains,
-            'incentives' => $incentives,
-        ]);
+        Excel::store(new LogsExport(), $file_name, 'local', Excel::XLSX);
+    } catch (\Exception $e) {
+        LaravelLog::error('Schedule call failed: ' . $e->getMessage());
     }
-
-    $year = Carbon::now()->year;
-    $year = (string)$year;
-    $file_name = $year.'xlsx';
-
-    Excel::store(new LogsExport(), $file_name, 'local', Excel::XLSX);
-
 })->everyMinute();
-
