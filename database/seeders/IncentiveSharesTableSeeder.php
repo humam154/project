@@ -15,8 +15,6 @@ class IncentiveSharesTableSeeder extends Seeder
     {
         DB::table('incentive_shares')->insert([
             ['name' => 'manager', 'amount_of_share' => 150,],
-            ['name' => 'Deputy', 'amount_of_share' => 125,],
-            ['name' => 'Supervisor', 'amount_of_share' => 110,],
             ['name' => 'Employee', 'amount_of_share' => 100,],
             ['name' => 'most employee of the month', 'amount_of_share' => 125,],
         ]);
