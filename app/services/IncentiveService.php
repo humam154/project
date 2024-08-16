@@ -43,7 +43,7 @@ class IncentiveService
                             $notes_on_employees = NoteOnEmployee::query()->create([
                                 'note' => $incentives[$i]['note'],
                                 'incentive_id' => $distributedIncentive['id'],
-                                'regulation_id' => $incentives[$i]['regulations'][$j]['id'],
+                                'regulation_id' => $incentives[$i]['regulations'][$j],
                             ]);
                         }
                     }
