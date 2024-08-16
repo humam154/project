@@ -1,8 +1,10 @@
 <?php
 
+use App\Exports\LogsExport;
 use App\Models\Employee;
 use App\Models\Log;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schedule;
@@ -16,7 +18,7 @@ Artisan::command('inspire', function () {
 Schedule::call(function (){
     $employees = Employee::query()->get();
 
-    for ($i = 1; $i < count($employees); $i++) {
+    for ($i = 1; $i <= count($employees); $i++) {
         $employee_id = $i;
 
         $full_name = DB::select('
@@ -77,6 +79,11 @@ Schedule::call(function (){
         ]);
     }
 
+    $year = Carbon::now()->year;
+    $year = (string)$year;
+    $file_name = $year.'xlsx';
 
-    //Excel::store(new );
-});
+    Excel::store(new LogsExport(), $file_name, 'local', Excel::XLSX);
+
+})->everyMinute();
+

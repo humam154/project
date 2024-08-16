@@ -27,16 +27,28 @@ class LogsExport implements  FromQuery, shouldAutoSize, withMapping, withHeading
     public function map($row): array
     {
         return [
-            $row->id,
-            $row->name,
+            $row->employee_id,
+            $row->full_name,
+            $row->email,
+            $row->phone,
+            $row->salary,
+            $row->grade,
+            $row->number_of_complains,
+            $row->incentives
         ];
     }
 
     public function headings(): array
     {
         return [
-            'id',
-            'name',
+            'employee_id',
+            'full_name',
+            'email',
+            'phone',
+            'salary',
+            'grade',
+            'number_of_complains',
+            'incentives'
         ];
     }
 
@@ -44,7 +56,7 @@ class LogsExport implements  FromQuery, shouldAutoSize, withMapping, withHeading
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->getStyle('A1:C1')->applyFromArray([
+                $event->sheet->getStyle('A1:H1')->applyFromArray([
                     'font' => ['bold' => true],
                     'borders' => [
                         'outline' => [
