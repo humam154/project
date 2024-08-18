@@ -17,7 +17,7 @@ Artisan::command('inspire', function () {
 
 Schedule::call(function () {
     try {
-        // Fetch all employees and necessary data in raw SQL
+
         $employees = DB::select('
             SELECT
                 e.id AS employee_id,
@@ -41,7 +41,6 @@ Schedule::call(function () {
             JOIN salary_grades g ON s.grade_id = g.id
         ');
 
-        // Insert logs into the database
         foreach ($employees as $employee) {
             DB::table('logs')->insert([
                 'employee_id' => $employee->employee_id,
@@ -57,7 +56,6 @@ Schedule::call(function () {
             ]);
         }
 
-        // Export logs to Excel
         $year = Carbon::now()->year;
         $year = (string)$year;
         $file_name = $year . '.xlsx';
@@ -66,4 +64,4 @@ Schedule::call(function () {
     } catch (\Exception $e) {
         LaravelLog::error('Schedule call failed: ' . $e->getMessage());
     }
-})->everyMinute();
+})->yearlyOn(12, 31, '00:00');
